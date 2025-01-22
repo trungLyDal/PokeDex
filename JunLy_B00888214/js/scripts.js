@@ -52,3 +52,18 @@ window.addEventListener('DOMContentLoaded', event => {
     });
 
 });
+const url = `https://pokeapi.co/api/v2/pokemon?limit=50`;
+fetch(url)
+.then(response => response.json())
+.then(data => {
+    console.log(data);
+    })
+.catch(error => console.log(error));
+
+const searchButton = document.querySelector('.custom-search-btn');
+const searchInput = document.querySelector('.custom-search');
+
+searchButton.addEventListener('click', () => {
+    const searchItem = searchInput.value;
+    console.log(`Pokemon searched for is: "${searchItem}"`);
+});
