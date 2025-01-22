@@ -13,4 +13,4 @@ Pokedex - I choose Pokedex Application because I am a hardcore Pokemon fan. I wa
 ## Citations & Acknowledgements
 
 1. https://startbootstrap.com/theme/freelancer
-
+2. https://imgflip.com/memetemplate/488039848/Detective-Pikachu
