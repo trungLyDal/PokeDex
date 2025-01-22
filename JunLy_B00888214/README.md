@@ -12,4 +12,5 @@ Pokedex - I choose Pokedex Application because I am a hardcore Pokemon fan. I wa
 
 ## Citations & Acknowledgements
 
-1. 
+1. https://startbootstrap.com/theme/freelancer
+
