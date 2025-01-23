@@ -56,14 +56,35 @@ const url = `https://pokeapi.co/api/v2/pokemon?limit=50`;
 fetch(url)
 .then(response => response.json())
 .then(data => {
-    console.log(data);
-    })
-.catch(error => console.log(error));
-
 const searchButton = document.querySelector('.custom-search-btn');
 const searchInput = document.querySelector('.custom-search');
 
+const pokemonList = data.results;
+
 searchButton.addEventListener('click', () => {
-    const searchItem = searchInput.value;
-    console.log(`Pokemon searched for is: "${searchItem}"`);
-});
+    const searchItem = searchInput.value.trim().toLowerCase(); 
+    if (searchItem === '') {
+      alert('Please enter a valid Pokémon name or ID');
+      return;
+    }
+
+    // Search by name or ID
+    const foundPokemon = pokemonList.find(pokemon => {
+      const idFromUrl = pokemon.url.split('/').filter(Boolean).pop(); 
+      return pokemon.name === searchItem || idFromUrl === searchItem;
+    });
+
+    if (foundPokemon) {
+      const pokemonId = foundPokemon.url.split('/').filter(Boolean).pop();
+      console.log(`Found Pokémon: ${foundPokemon.name}`);
+      console.log(`ID: ${pokemonId}`);
+      console.log(`URL: ${foundPokemon.url}`);
+    } 
+    else {
+      alert('No Pokémon found with the given name or ID.');
+    }
+  });
+})
+.catch(error => console.log(error));
+
+
