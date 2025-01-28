@@ -1,12 +1,3 @@
-/*!
-* Start Bootstrap - Freelancer v7.0.7 (https://startbootstrap.com/theme/freelancer)
-* Copyright 2013-2023 Start Bootstrap
-* Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-freelancer/blob/master/LICENSE)
-*/
-//
-// Scripts
-// 
-
 window.addEventListener('DOMContentLoaded', event => {
 
     // Navbar shrink function
@@ -64,6 +55,7 @@ fetch(url)
     const modalPokemonImage = document.querySelector('.modal-pokemon-image');
     const pokemonList = data.results;
     const pokemonDetailsContainer = document.querySelector('.pokemon-details-container');
+    const modalTitle = document.querySelector('.portfolio-modal-title');
 
     const fetchDetails = pokemonList.map(pokemon => 
       fetch(pokemon.url)
@@ -110,20 +102,44 @@ fetch(url)
               console.log('No image available for this Pokémon.');
             }
             console.log('Pokemon details:', pokemonDetails);
-
+            modalTitle.textContent = foundPokemon.name;
             pokemonDetailsContainer.innerHTML = 
             `
-              <h2>${foundPokemon.name.charAt(0).toUpperCase() + foundPokemon.name.slice(1)}</h2>
-              <p><strong>Pokemon ID:</strong> ${pokemonDetails.id}</p>
-              <p><strong>Types:</strong> ${pokemonDetails.types.map(type => type.type.name).join(', ')}</p>
-              <p><strong>Height:</strong> ${pokemonDetails.height / 10} m</p>
-              <p><strong>Weight:</strong> ${pokemonDetails.weight / 10} kg</p>
-              <p><strong>Abilities:</strong> ${pokemonDetails.abilities.map(ability => ability.ability.name).join(', ')}</p>
-              <p><strong>Base Experience:</strong> ${pokemonDetails.base_experience}</p>
-              
+            <div class="pokemon-details-container">
+    <table class="pokemon-table">
+        <tr>
+            <th>Attribute</th>
+            <th>Value</th>
+        </tr>
+        <tr>
+            <td><strong>Pokemon ID</strong></td>
+            <td>${pokemonDetails.id}</td>
+        </tr>
+        <tr>
+            <td><strong>Types</strong></td>
+            <td>${pokemonDetails.types.map(type => type.type.name.toUpperCase()).join(', ')}</td>
+        </tr>
+        <tr>
+            <td><strong>Height</strong></td>
+            <td>${pokemonDetails.height / 10} m</td>
+        </tr>
+        <tr>
+            <td><strong>Weight</strong></td>
+            <td>${pokemonDetails.weight / 10} kg</td>
+        </tr>
+        <tr>
+            <td><strong>Abilities</strong></td>
+            <td>${pokemonDetails.abilities.map(ability => ability.ability.name.toUpperCase()).join(', ')}</td>
+        </tr>
+        <tr>
+            <td><strong>Base Experience</strong></td>
+            <td>${pokemonDetails.base_experience}</td>
+        </tr>
+    </table>
+</div>
             `;
           } else {
-            alert('No Pokémon found with the given name or ID.');
+            alert('No Pokémon found.');
           }
         });
       })

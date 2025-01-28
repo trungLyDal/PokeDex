@@ -11072,3 +11072,31 @@ html {
 .pokemon-image.hidden {
   opacity: 0;
 }
+
+.pokemon-table {
+  width: 100%;
+  border-collapse: collapse; /* Remove space between cells */
+  margin: 20px 0; /* Add some margin for spacing */
+  font-size: 1em; /* Adjust font size as needed */
+  font-family: Arial, sans-serif; /* Use a clean font */
+}
+
+.pokemon-table th, .pokemon-table td {
+  padding: 12px 15px; /* Add padding for better spacing */
+  text-align: left; /* Align text to the left */
+  border: 1px solid #ddd; /* Add borders to cells */
+}
+
+.pokemon-table th {
+  background-color: #f4f4f4; /* Light gray background for headers */
+  font-weight: bold; /* Make headers bold */
+  color: #333; /* Darker text color for headers */
+}
+
+.pokemon-table tr:nth-child(even) {
+  background-color: #f9f9f9; /* Zebra-striping for rows */
+}
+
+.pokemon-table tr:hover {
+  background-color: #f1f1f1; /* Highlight row on hover */
+}
