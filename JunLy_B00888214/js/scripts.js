@@ -52,13 +52,14 @@ window.addEventListener('DOMContentLoaded', event => {
     });
 
 });
-const url = `https://pokeapi.co/api/v2/pokemon?limit=50`;
+const url = `https://pokeapi.co/api/v2/pokemon?limit=151`;
 fetch(url)
   .then(response => response.json())
   .then(data => {
     const searchButton = document.querySelector('.custom-search-btn');
     const searchInput = document.querySelector('.custom-search');
     const pokemonImage = document.querySelector('.pokemon-image');
+    const modalPokemonImage = document.querySelector('.modal-pokemon-image');
 
     const pokemonList = data.results;
 
@@ -82,11 +83,17 @@ fetch(url)
             if (imageUrl) {
    
               pokemonImage.classList.add('hidden');
+              modalPokemonImage.classList.add('hidden'); 
+
 
               setTimeout(() => {
                 pokemonImage.src = imageUrl;
                 pokemonImage.alt = foundPokemon.name;
                 pokemonImage.classList.remove('hidden');
+
+                modalPokemonImage.src = imageUrl;
+                modalPokemonImage.alt = foundPokemon.name;
+                modalPokemonImage.classList.remove('hidden');
                 console.log('Image loaded successfully.');
                 console.log('Pokemon name:', foundPokemon.name);
                 console.log('Pokemon ID:', pokemonDetails.id);

@@ -11055,11 +11055,17 @@ html {
 
 .pokemon-image {
   width: 100%; 
-  max-width: 300px; 
   height: auto; 
   display: block; 
   margin: 0 auto; 
   transition: opacity 0.5s ease-in-out;
+}
+
+.modal-pokemon-image {
+  width: 100%; 
+  height: auto; 
+  display: block; 
+  border: 5px solid;
 }
 
 .pokemon-image.hidden {
