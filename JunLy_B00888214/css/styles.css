@@ -11004,6 +11004,7 @@ html {
   max-width: 25rem;
   border-radius: 0.5rem;
   overflow: hidden;
+  border: 10px solid ;
 }
 .portfolio .portfolio-item .portfolio-item-caption {
   position: absolute;
@@ -11052,4 +11053,15 @@ html {
 
 }
 
+.pokemon-image {
+  width: 100%; 
+  max-width: 300px; 
+  height: auto; 
+  display: block; 
+  margin: 0 auto; 
+  transition: opacity 0.5s ease-in-out;
+}
 
+.pokemon-image.hidden {
+  opacity: 0;
+}

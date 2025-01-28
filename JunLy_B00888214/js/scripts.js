@@ -54,37 +54,54 @@ window.addEventListener('DOMContentLoaded', event => {
 });
 const url = `https://pokeapi.co/api/v2/pokemon?limit=50`;
 fetch(url)
-.then(response => response.json())
-.then(data => {
-const searchButton = document.querySelector('.custom-search-btn');
-const searchInput = document.querySelector('.custom-search');
+  .then(response => response.json())
+  .then(data => {
+    const searchButton = document.querySelector('.custom-search-btn');
+    const searchInput = document.querySelector('.custom-search');
+    const pokemonImage = document.querySelector('.pokemon-image');
 
-const pokemonList = data.results;
+    const pokemonList = data.results;
 
-searchButton.addEventListener('click', () => {
-    const searchItem = searchInput.value.trim().toLowerCase(); 
-    if (searchItem === '') {
-      alert('Please enter a valid Pokémon name or ID');
-      return;
-    }
+    searchButton.addEventListener('click', () => {
+      const searchItem = searchInput.value.trim().toLowerCase();
+      if (searchItem === '') {
+        alert('Please enter a valid Pokémon name or ID');
+        return;
+      }
 
-    // Search by name or ID
-    const foundPokemon = pokemonList.find(pokemon => {
-      const idFromUrl = pokemon.url.split('/').filter(Boolean).pop(); 
-      return pokemon.name === searchItem || idFromUrl === searchItem;
+      const foundPokemon = pokemonList.find(pokemon => {
+        const idFromUrl = pokemon.url.split('/').filter(Boolean).pop();
+        return pokemon.name === searchItem || idFromUrl === searchItem;
+      });
+
+      if (foundPokemon) {
+        fetch(foundPokemon.url)
+          .then(response => response.json())
+          .then(pokemonDetails => {
+            const imageUrl = pokemonDetails.sprites.front_default;
+            if (imageUrl) {
+   
+              pokemonImage.classList.add('hidden');
+
+              setTimeout(() => {
+                pokemonImage.src = imageUrl;
+                pokemonImage.alt = foundPokemon.name;
+                pokemonImage.classList.remove('hidden');
+                console.log('Image loaded successfully.');
+                console.log('Pokemon name:', foundPokemon.name);
+                console.log('Pokemon ID:', pokemonDetails.id);
+              }, 500); 
+            } else {
+              console.log('No image available for this Pokémon.');
+            }
+          })
+          .catch(error => console.log(error));
+      } else {
+        alert('No Pokémon found with the given name or ID.');
+      }
     });
+  })
+  .catch(error => console.log(error));
 
-    if (foundPokemon) {
-      const pokemonId = foundPokemon.url.split('/').filter(Boolean).pop();
-      console.log(`Found Pokémon: ${foundPokemon.name}`);
-      console.log(`ID: ${pokemonId}`);
-      console.log(`URL: ${foundPokemon.url}`);
-    } 
-    else {
-      alert('No Pokémon found with the given name or ID.');
-    }
-  });
-})
-.catch(error => console.log(error));
 
 
