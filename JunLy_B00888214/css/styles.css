@@ -11075,28 +11075,63 @@ html {
 
 .pokemon-table {
   width: 100%;
-  border-collapse: collapse; /* Remove space between cells */
-  margin: 20px 0; /* Add some margin for spacing */
-  font-size: 1em; /* Adjust font size as needed */
-  font-family: Arial, sans-serif; /* Use a clean font */
+  border-collapse: collapse; 
+  margin: 20px 0; 
+  font-size: 1em; 
+  font-family: Arial, sans-serif; 
 }
 
 .pokemon-table th, .pokemon-table td {
-  padding: 12px 15px; /* Add padding for better spacing */
-  text-align: left; /* Align text to the left */
-  border: 1px solid #ddd; /* Add borders to cells */
+  padding: 12px 15px; 
+  text-align: left; 
+  border: 1px solid #ddd; 
 }
 
 .pokemon-table th {
-  background-color: #f4f4f4; /* Light gray background for headers */
-  font-weight: bold; /* Make headers bold */
-  color: #333; /* Darker text color for headers */
+  background-color: #f4f4f4;
+  font-weight: bold; 
+  color: #333; 
 }
 
 .pokemon-table tr:nth-child(even) {
-  background-color: #f9f9f9; /* Zebra-striping for rows */
+  background-color: #f9f9f9; 
 }
 
 .pokemon-table tr:hover {
-  background-color: #f1f1f1; /* Highlight row on hover */
+  background-color: #f1f1f1; 
+}
+
+.moves-section {
+  margin-top: 20px;
+}
+
+.move-category {
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.move-category summary {
+  padding: 10px 15px;
+  background-color: #f4f4f4;
+  font-weight: bold;
+  cursor: pointer;
+  list-style: none; /* Remove default arrow in some browsers */
+}
+
+.move-category summary::-webkit-details-marker {
+  display: none; /* Hide default arrow in WebKit browsers */
+}
+
+.move-category ul {
+  margin: 0;
+  padding: 10px 15px;
+  background-color: #f9f9f9;
+  border-top: 1px solid #ddd;
+}
+
+.move-category li {
+  padding: 5px 0;
+  list-style-type: none; /* Remove bullet points */
 }

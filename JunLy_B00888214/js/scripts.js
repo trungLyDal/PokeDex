@@ -43,7 +43,7 @@ window.addEventListener('DOMContentLoaded', event => {
     });
 
 });
-const url = `https://pokeapi.co/api/v2/pokemon?limit=151`;
+const url = `https://pokeapi.co/api/v2/pokemon?limit=1025`;
 let pokemonDetailsCache = {}; 
 
 fetch(url)
@@ -106,37 +106,70 @@ fetch(url)
             pokemonDetailsContainer.innerHTML = 
             `
             <div class="pokemon-details-container">
-    <table class="pokemon-table">
-        <tr>
-            <th>Attribute</th>
-            <th>Value</th>
-        </tr>
-        <tr>
-            <td><strong>Pokemon ID</strong></td>
-            <td>${pokemonDetails.id}</td>
-        </tr>
-        <tr>
-            <td><strong>Types</strong></td>
-            <td>${pokemonDetails.types.map(type => type.type.name.toUpperCase()).join(', ')}</td>
-        </tr>
-        <tr>
-            <td><strong>Height</strong></td>
-            <td>${pokemonDetails.height / 10} m</td>
-        </tr>
-        <tr>
-            <td><strong>Weight</strong></td>
-            <td>${pokemonDetails.weight / 10} kg</td>
-        </tr>
-        <tr>
-            <td><strong>Abilities</strong></td>
-            <td>${pokemonDetails.abilities.map(ability => ability.ability.name.toUpperCase()).join(', ')}</td>
-        </tr>
-        <tr>
-            <td><strong>Base Experience</strong></td>
-            <td>${pokemonDetails.base_experience}</td>
-        </tr>
-    </table>
-</div>
+              <table class="pokemon-table">
+                <tr>
+                  <th>Attribute</th>
+                  <th>Value</th>
+                </tr>
+                <tr>
+                  <td><strong>Pokemon ID</strong></td>
+                  <td>${pokemonDetails.id}</td>
+                </tr>
+                <tr>
+                  <td><strong>Types</strong></td>
+                  <td>${pokemonDetails.types.map(type => type.type.name.toUpperCase()).join(', ')}</td>
+                </tr>
+                <tr>
+                  <td><strong>Height</strong></td>
+                  <td>${pokemonDetails.height / 10} m</td>
+                </tr>
+                <tr>
+                  <td><strong>Weight</strong></td>
+                  <td>${pokemonDetails.weight / 10} kg</td>
+                </tr>
+                <tr>
+                  <td><strong>Abilities</strong></td>
+                  <td>${pokemonDetails.abilities.map(ability => ability.ability.name.toUpperCase()).join(', ')}</td>
+                </tr>
+                <tr>
+                  <td><strong>Base Experience</strong></td>
+                  <td>${pokemonDetails.base_experience}</td>
+                </tr>
+              </table>
+              <div class="moves-section">
+        <h3>Moves</h3>
+
+        <details class="move-category">
+            <summary>Level Up Moves</summary>
+            <ul>
+                ${pokemonDetails.moves
+                    .filter(move => move.version_group_details.some(detail => detail.move_learn_method.name === 'level-up'))
+                    .map(move => `<li>${move.move.name.toUpperCase()} (Level ${move.version_group_details.find(detail => detail.move_learn_method.name === 'level-up').level_learned_at})</li>`)
+                    .join('')}
+            </ul>
+        </details>
+
+        <details class="move-category">
+            <summary>TM/HM Moves</summary>
+            <ul>
+                ${pokemonDetails.moves
+                    .filter(move => move.version_group_details.some(detail => detail.move_learn_method.name === 'machine'))
+                    .map(move => `<li>${move.move.name.toUpperCase()}</li>`)
+                    .join('')}
+            </ul>
+        </details>
+
+        <details class="move-category">
+            <summary>Breeding Moves</summary>
+            <ul>
+                ${pokemonDetails.moves
+                    .filter(move => move.version_group_details.some(detail => detail.move_learn_method.name === 'egg'))
+                    .map(move => `<li>${move.move.name.toUpperCase()}</li>`)
+                    .join('')}
+            </ul>
+        </details>
+    </div>
+            </div>
             `;
           } else {
             alert('No Pokémon found.');
