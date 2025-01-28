@@ -53,6 +53,8 @@ window.addEventListener('DOMContentLoaded', event => {
 
 });
 const url = `https://pokeapi.co/api/v2/pokemon?limit=151`;
+let pokemonDetailsCache = {}; 
+
 fetch(url)
   .then(response => response.json())
   .then(data => {
@@ -60,31 +62,37 @@ fetch(url)
     const searchInput = document.querySelector('.custom-search');
     const pokemonImage = document.querySelector('.pokemon-image');
     const modalPokemonImage = document.querySelector('.modal-pokemon-image');
-
     const pokemonList = data.results;
+    const pokemonDetailsContainer = document.querySelector('.pokemon-details-container');
 
-    searchButton.addEventListener('click', () => {
-      const searchItem = searchInput.value.trim().toLowerCase();
-      if (searchItem === '') {
-        alert('Please enter a valid Pokémon name or ID');
-        return;
-      }
+    const fetchDetails = pokemonList.map(pokemon => 
+      fetch(pokemon.url)
+        .then(response => response.json())
+        .then(pokemonDetails => {
+          pokemonDetailsCache[pokemon.name] = pokemonDetails;
+        })
+    );
 
-      const foundPokemon = pokemonList.find(pokemon => {
-        const idFromUrl = pokemon.url.split('/').filter(Boolean).pop();
-        return pokemon.name === searchItem || idFromUrl === searchItem;
-      });
+    Promise.all(fetchDetails)
+      .then(() => {
+        searchButton.addEventListener('click', () => {
+          const searchItem = searchInput.value.trim().toLowerCase();
+          if (searchItem === '') {
+            alert('Please enter a valid Pokémon name or ID');
+            return;
+          }
 
-      if (foundPokemon) {
-        fetch(foundPokemon.url)
-          .then(response => response.json())
-          .then(pokemonDetails => {
+          const foundPokemon = pokemonList.find(pokemon => {
+            const idFromUrl = pokemon.url.split('/').filter(Boolean).pop();
+            return pokemon.name === searchItem || idFromUrl === searchItem;
+          });
+
+          if (foundPokemon && pokemonDetailsCache[foundPokemon.name]) {
+            const pokemonDetails = pokemonDetailsCache[foundPokemon.name];
             const imageUrl = pokemonDetails.sprites.front_default;
             if (imageUrl) {
-   
               pokemonImage.classList.add('hidden');
-              modalPokemonImage.classList.add('hidden'); 
-
+              modalPokemonImage.classList.add('hidden');
 
               setTimeout(() => {
                 pokemonImage.src = imageUrl;
@@ -97,18 +105,29 @@ fetch(url)
                 console.log('Image loaded successfully.');
                 console.log('Pokemon name:', foundPokemon.name);
                 console.log('Pokemon ID:', pokemonDetails.id);
-              }, 500); 
+              }, 500);
             } else {
               console.log('No image available for this Pokémon.');
             }
-          })
-          .catch(error => console.log(error));
-      } else {
-        alert('No Pokémon found with the given name or ID.');
-      }
-    });
+
+            pokemonDetailsContainer.innerHTML = `
+              <h2>${foundPokemon.name.charAt(0).toUpperCase() + foundPokemon.name.slice(1)}</h2>
+              <p><strong>Pokemon ID:</strong> ${pokemonDetails.id}</p>
+              <p><strong>Types:</strong> ${pokemonDetails.types.map(type => type.type.name).join(', ')}</p>
+              <p><strong>Height:</strong> ${pokemonDetails.height / 10} m</p>
+              <p><strong>Weight:</strong> ${pokemonDetails.weight / 10} kg</p>
+              <p><strong>Abilities:</strong> ${pokemonDetails.abilities.map(ability => ability.ability.name).join(', ')}</p>
+              <p><strong>Base Experience:</strong> ${pokemonDetails.base_experience}</p>
+            `;
+          } else {
+            alert('No Pokémon found with the given name or ID.');
+          }
+        });
+      })
+      .catch(error => console.log(error));
   })
   .catch(error => console.log(error));
+
 
 
 

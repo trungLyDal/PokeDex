@@ -11066,6 +11066,7 @@ html {
   height: auto; 
   display: block; 
   border: 5px solid;
+  margin: 0 auto;
 }
 
 .pokemon-image.hidden {
