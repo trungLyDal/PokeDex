@@ -109,8 +109,10 @@ fetch(url)
             } else {
               console.log('No image available for this Pokémon.');
             }
+            console.log('Pokemon details:', pokemonDetails);
 
-            pokemonDetailsContainer.innerHTML = `
+            pokemonDetailsContainer.innerHTML = 
+            `
               <h2>${foundPokemon.name.charAt(0).toUpperCase() + foundPokemon.name.slice(1)}</h2>
               <p><strong>Pokemon ID:</strong> ${pokemonDetails.id}</p>
               <p><strong>Types:</strong> ${pokemonDetails.types.map(type => type.type.name).join(', ')}</p>
@@ -118,6 +120,7 @@ fetch(url)
               <p><strong>Weight:</strong> ${pokemonDetails.weight / 10} kg</p>
               <p><strong>Abilities:</strong> ${pokemonDetails.abilities.map(ability => ability.ability.name).join(', ')}</p>
               <p><strong>Base Experience:</strong> ${pokemonDetails.base_experience}</p>
+              
             `;
           } else {
             alert('No Pokémon found with the given name or ID.');
