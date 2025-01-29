@@ -43,19 +43,16 @@ window.addEventListener('DOMContentLoaded', event => {
     });
 
 });
-// Global variables
 const url = `https://pokeapi.co/api/v2/pokemon?limit=150`;
 let pokemonList = []; 
 let pokemonDetailsCache = {}; 
 let isDataLoaded = false; 
 
-// Fetch Pokémon data
 fetch(url)
   .then(response => response.json())
   .then(data => {
     pokemonList = data.results; 
 
-    // Fetch details for each Pokémon
     const fetchDetails = pokemonList.map(pokemon =>
       fetch(pokemon.url)
         .then(response => response.json())
@@ -64,7 +61,6 @@ fetch(url)
         })
     );
 
-    // Wait for all details to be fetched
     Promise.all(fetchDetails)
       .then(() => {
         isDataLoaded = true; 
@@ -72,7 +68,6 @@ fetch(url)
 
         displayPokemon(pokemonList);
 
-        // Add event listener for search button
         const searchButton = document.querySelector('.custom-search-btn');
         const searchInput = document.querySelector('.custom-search');
         const pokemonImage = document.querySelector('.pokemon-image');

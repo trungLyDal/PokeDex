@@ -11117,11 +11117,11 @@ html {
   background-color: #f4f4f4;
   font-weight: bold;
   cursor: pointer;
-  list-style: none; /* Remove default arrow in some browsers */
+  list-style: none; 
 }
 
 .move-category summary::-webkit-details-marker {
-  display: none; /* Hide default arrow in WebKit browsers */
+  display: none; 
 }
 
 .move-category ul {
@@ -11133,7 +11133,7 @@ html {
 
 .move-category li {
   padding: 5px 0;
-  list-style-type: none; /* Remove bullet points */
+  list-style-type: none; 
 }
 
 .filter-form {
@@ -11150,17 +11150,38 @@ html {
   box-sizing: border-box;
   padding: 10px;
   text-align: center;
-  border: 5px solid #ccc;
+  border: 5px solid black;
   margin: 5px 0;
   cursor: pointer;
   background-color: #fff;
   color: #000;
+  font-weight: bold;
 }
 
 .filter-form input[type="checkbox"]:checked + label {
   background-color: black;
-  border-color: #000;
-  color: white
+  border-color: grey;
+  color: white; 
 }
 
+details.mobile-only {
+  display: none;
+}
 
+@media (max-width: 576px) {
+  .filter-form {
+      display: block;
+  }
+
+  .filter-form label {
+      width: 100%; 
+  }
+
+  details.mobile-only {
+      display: block;
+  }
+
+  .filter-form > label {
+      display: none;
+  }
+}
