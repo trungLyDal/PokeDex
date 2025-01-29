@@ -43,7 +43,7 @@ window.addEventListener('DOMContentLoaded', event => {
     });
 
 });
-const url = `https://pokeapi.co/api/v2/pokemon?limit=150`;
+const url = `https://pokeapi.co/api/v2/pokemon?limit=100`;
 let pokemonList = []; 
 let pokemonDetailsCache = {}; 
 let isDataLoaded = false; 
@@ -58,6 +58,7 @@ fetch(url)
         .then(response => response.json())
         .then(pokemonDetails => {
           pokemonDetailsCache[pokemon.name] = pokemonDetails; 
+          console.table(pokemonDetails);
         })
     );
 
@@ -67,6 +68,7 @@ fetch(url)
         console.log('Pokémon data loaded successfully.');
 
         displayPokemon(pokemonList);
+        console.table(pokemonList);
 
         const searchButton = document.querySelector('.custom-search-btn');
         const searchInput = document.querySelector('.custom-search');
@@ -111,7 +113,8 @@ fetch(url)
             }
             console.log('Pokemon details:', pokemonDetails);
             modalTitle.textContent = foundPokemon.name;
-            pokemonDetailsContainer.innerHTML = `
+            pokemonDetailsContainer.innerHTML = 
+            `
               <div class="pokemon-details-container">
                 <table class="pokemon-table">
                   <tr>
@@ -273,6 +276,7 @@ document.addEventListener('click', function (event) {
       const modalTitle = document.querySelector('.portfolio-modal-title');
       const modalPokemonImage = document.querySelector('.modal-pokemon-image');
       const pokemonDetailsContainer = document.querySelector('.pokemon-details-container');
+      const evolutionChainContainer = document.querySelector('.evolution-chain-container');
 
       modalTitle.textContent = pokemonName;
       modalPokemonImage.src = pokemonDetails.sprites.front_default;
@@ -341,7 +345,186 @@ document.addEventListener('click', function (event) {
             </details>
           </div>
         </div>
+        <div class="evolution-chain-container">
+          <h3>Evolution Chain</h3>
+          <div class="evolution-chain">
+           <button>Load Evolution Chain</button>
+          </div>
+        </div>
       `;
     }
   }
 });
+document.addEventListener('click', async function(event) {
+  if (event.target.closest('.evolution-chain button')) {
+    const modalTitle = document.querySelector('.portfolio-modal-title');
+    const pokemonName = modalTitle.textContent.toLowerCase();
+    const pokemonDetails = pokemonDetailsCache[pokemonName];
+    const evolutionChainContainer = event.target.closest('.evolution-chain');
+    
+    evolutionChainContainer.innerHTML = 
+    ``
+
+    try {
+      const speciesResponse = await fetch(pokemonDetails.species.url);
+      const speciesData = await speciesResponse.json();
+      
+      const evolutionResponse = await fetch(speciesData.evolution_chain.url);
+      const evolutionData = await evolutionResponse.json();
+
+      const chain = formatEvolutionChain(evolutionData.chain);
+      displayEvolutionChain(chain, evolutionChainContainer);
+    } catch (error) {
+      evolutionChainContainer.innerHTML = '<p>Failed to load evolution chain. Please try again.</p>';
+      console.error('Error loading evolution chain:', error);
+    }
+  }
+});
+
+function formatEvolutionChain(chain) {
+  const evolution = {
+    name: chain.species.name,
+    min_level: chain.evolution_details[0]?.min_level,
+    trigger: chain.evolution_details[0]?.trigger?.name,
+    item: chain.evolution_details[0]?.item?.name
+  };
+
+  const evolutions = [evolution];
+  
+  if (chain.evolves_to.length > 0) {
+    chain.evolves_to.forEach(evo => {
+      evolutions.push(...formatEvolutionChain(evo));
+    });
+  }
+
+  return evolutions;
+}
+
+function displayEvolutionChain(chain, container) {
+  const html = chain.map((evo, index) => {
+    const pokemon = pokemonDetailsCache[evo.name];
+    if (!pokemon) return '';
+    
+    let evolutionDetails = '';
+    if (index > 0) {
+      const details = [];
+      if (evo.min_level) details.push(`Level ${evo.min_level}`);
+      if (evo.trigger && evo.trigger !== 'level-up') details.push(evo.trigger.replace('-', ' '));
+      if (evo.item) details.push(`Use ${evo.item.replace('-', ' ')}`);
+      evolutionDetails = details.length ? `<div class="evolution-details">(${details.join(', ')})</div>` : '';
+    }
+
+    return `
+      <div class="evolution-stage">
+        <div class="pokemon-link" data-pokemon-name="${evo.name}" style="cursor: pointer;">
+          <img src="${pokemon.sprites.front_default}" alt="${evo.name}">
+          <div class="evolution-name">${evo.name.toUpperCase()}</div>
+          ${evolutionDetails}
+        </div>
+        ${index < chain.length - 1 ? '<div class="evolution-arrow">→</div>' : ''}
+      </div>
+    `;
+  }).join('');
+
+  container.innerHTML = `
+    <style>
+      .pokemon-link {
+        transition: transform 0.2s;
+      }
+      .pokemon-link:hover {
+        transform: scale(1.1);
+      }
+    </style>
+    <div class="evolution-chain-display">
+      ${html}
+    </div>
+  `;
+
+  container.querySelectorAll('.pokemon-link').forEach(link => {
+    link.addEventListener('click', () => {
+      const pokemonName = link.dataset.pokemonName;
+      const pokemonDetails = pokemonDetailsCache[pokemonName];
+      
+      if (pokemonDetails) {
+        const modalTitle = document.querySelector('.portfolio-modal-title');
+        const modalPokemonImage = document.querySelector('.modal-pokemon-image');
+        const pokemonDetailsContainer = document.querySelector('.pokemon-details-container');
+        
+        modalTitle.textContent = pokemonName;
+        modalPokemonImage.src = pokemonDetails.sprites.front_default;
+        modalPokemonImage.alt = pokemonName;
+
+        pokemonDetailsContainer.innerHTML = `
+          <div class="pokemon-details-container">
+            <table class="pokemon-table">
+              <tr>
+                <th>Attribute</th>
+                <th>Value</th>
+              </tr>
+              <tr>
+                <td><strong>Pokemon ID</strong></td>
+                <td>${pokemonDetails.id}</td>
+              </tr>
+              <tr>
+                <td><strong>Types</strong></td>
+                <td>${pokemonDetails.types.map(type => type.type.name.toUpperCase()).join(', ')}</td>
+              </tr>
+              <tr>
+                <td><strong>Height</strong></td>
+                <td>${pokemonDetails.height / 10} m</td>
+              </tr>
+              <tr>
+                <td><strong>Weight</strong></td>
+                <td>${pokemonDetails.weight / 10} kg</td>
+              </tr>
+              <tr>
+                <td><strong>Abilities</strong></td>
+                <td>${pokemonDetails.abilities.map(ability => ability.ability.name.toUpperCase()).join(', ')}</td>
+              </tr>
+              <tr>
+                <td><strong>Base Experience</strong></td>
+                <td>${pokemonDetails.base_experience}</td>
+              </tr>
+            </table>
+            <div class="moves-section">
+              <h3>Moves</h3>
+              <details class="move-category">
+                <summary>Level Up Moves</summary>
+                <ul>
+                  ${pokemonDetails.moves
+                    .filter(move => move.version_group_details.some(detail => detail.move_learn_method.name === 'level-up'))
+                    .map(move => `<li>${move.move.name.toUpperCase()} (Level ${move.version_group_details.find(detail => detail.move_learn_method.name === 'level-up').level_learned_at})</li>`)
+                    .join('')}
+                </ul>
+              </details>
+              <details class="move-category">
+                <summary>TM/HM Moves</summary>
+                <ul>
+                  ${pokemonDetails.moves
+                    .filter(move => move.version_group_details.some(detail => detail.move_learn_method.name === 'machine'))
+                    .map(move => `<li>${move.move.name.toUpperCase()}</li>`)
+                    .join('')}
+                </ul>
+              </details>
+              <details class="move-category">
+                <summary>Breeding Moves</summary>
+                <ul>
+                  ${pokemonDetails.moves
+                    .filter(move => move.version_group_details.some(detail => detail.move_learn_method.name === 'egg'))
+                    .map(move => `<li>${move.move.name.toUpperCase()}</li>`)
+                    .join('')}
+                </ul>
+              </details>
+            </div>
+          </div>
+          <div class="evolution-chain-container">
+            <h3>Evolution Chain</h3>
+            <div class="evolution-chain">
+             <button>Load Evolution Chain</button>
+            </div>
+          </div>
+        `;
+      }
+    });
+  });
+}
