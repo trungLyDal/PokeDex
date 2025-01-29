@@ -11135,3 +11135,32 @@ html {
   padding: 5px 0;
   list-style-type: none; /* Remove bullet points */
 }
+
+.filter-form {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.filter-form input[type="checkbox"] {
+  display: none;
+}
+
+.filter-form label {
+  width: 16.66%; 
+  box-sizing: border-box;
+  padding: 10px;
+  text-align: center;
+  border: 5px solid #ccc;
+  margin: 5px 0;
+  cursor: pointer;
+  background-color: #fff;
+  color: #000;
+}
+
+.filter-form input[type="checkbox"]:checked + label {
+  background-color: black;
+  border-color: #000;
+  color: white
+}
+
+

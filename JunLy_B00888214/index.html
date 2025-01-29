@@ -45,14 +45,57 @@
             </div>
             <div class="container mt-5">
                 <div class="row justify-content-center">
-                  <div class="col-md-6 col-lg-4">
-                    <div class="input-group">
-                      <input type="text" class="form-control custom-search" placeholder="Search Pokemon...">
-                      <button class="btn custom-search-btn" type="button">Search</button>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="input-group">
+                            <input type="text" class="form-control custom-search" placeholder="Search Pokemon...">
+                            <button class="btn custom-search-btn" type="button">Search</button>
+                        </div>
                     </div>
-                  </div>
                 </div>
-              </div>
+                <div class="row justify-content-center mt-3">
+                    <div class="col-auto">
+                        <form class="filter-form">
+                            <input type="checkbox" id="fire-type" name="fire" value="Fire">
+                            <label for="fire-type"> FIRE</label>
+                            <input type="checkbox" id="water-type" name="water" value="Water">
+                            <label for="water-type"> WATER</label>
+                            <input type="checkbox" id="grass-type" name="grass" value="Grass">
+                            <label for="grass-type"> GRASS</label>
+                            <input type="checkbox" id="electric-type" name="electric" value="Electric">
+                            <label for="electric-type"> ELECTRIC</label>
+                            <input type="checkbox" id="psychic-type" name="psychic" value="Psychic">
+                            <label for="psychic-type"> PSYCHIC</label>
+                            <input type="checkbox" id="normal-type" name="normal" value="Normal">
+                            <label for="normal-type"> NORMAL</label>
+                            <input type="checkbox" id="fighting-type" name="fighting" value="Fighting">
+                            <label for="fighting-type"> FIGHTING</label>
+                            <input type="checkbox" id="flying-type" name="flying" value="Flying">
+                            <label for="flying-type"> FLYING</label>
+                            <input type="checkbox" id="poison-type" name="poison" value="Poison">
+                            <label for="poison-type"> POISON</label>
+                            <input type="checkbox" id="ground-type" name="ground" value="Ground">
+                            <label for="ground-type"> GROUND</label>
+                            <input type="checkbox" id="rock-type" name="rock" value="Rock">
+                            <label for="rock-type"> ROCK</label>
+                            <input type="checkbox" id="bug-type" name="bug" value="Bug">
+                            <label for="bug-type"> BUG</label>
+                            <input type="checkbox" id="ghost-type" name="ghost" value="Ghost">
+                            <label for="ghost-type"> GHOST</label>
+                            <input type="checkbox" id="steel-type" name="steel" value="Steel">
+                            <label for="steel-type"> STEEL</label>
+                            <input type="checkbox" id="ice-type" name="ice" value="Ice">
+                            <label for="ice-type"> ICE</label>
+                            <input type="checkbox" id="dragon-type" name="dragon" value="Dragon">
+                            <label for="dragon-type"> DRAGON</label>
+                            <input type="checkbox" id="dark-type" name="dark" value="Dark">
+                            <label for="dark-type"> DARK</label>
+                            <input type="checkbox" id="fairy-type" name="fairy" value="Fairy">
+                            <label for="fairy-type"> FAIRY</label> 
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
               
               
         </header>
@@ -70,6 +113,7 @@
                     <div class="divider-custom-line"></div>
                 </div>
                 <!-- Portfolio Grid Items-->
+                
                 <div class="row justify-content-center">
                     <!-- Portfolio Item 1-->
                     <div class="col-md-6 col-lg-4 mb-5">
@@ -80,6 +124,16 @@
                             <img class="img-fluid pokemon-image" src="assets/img/portfolio/R1.jpg" alt="Placeholder Image" />
                         </div>
                     </div>
+                </div>
+                <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">POKEMON FILTER LIST</h2>
+                <div class="divider-custom">
+                    <div class="divider-custom-line"></div>
+                    <div class="divider-custom-icon">
+                        <img src="assets/img/portfolio/R.png" alt="Poké Ball Icon" style="width: 3em; height: 3em;">
+                    </div>
+                    <div class="divider-custom-line"></div>
+                </div>
+                <div class="row justify-content-center" id="pokemon-grid">
                 </div>
             </div>
         </section>
@@ -191,6 +245,5 @@
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
     
-        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
     </body>
 </html>
