@@ -12,5 +12,28 @@ Pokedex - I choose Pokedex Application because I am a hardcore Pokemon fan. I wa
 
 ## Citations & Acknowledgements
 
-1. https://startbootstrap.com/theme/freelancer
-2. https://imgflip.com/memetemplate/488039848/Detective-Pikachu
+1. https://startbootstrap.com/theme/freelancer - THEME BOOTSTRAP
+2. https://imgflip.com/memetemplate/488039848/Detective-Pikachu - LANDING PICTURE
+3. https://www.flaticon.com/free-icon/game_13929018?term=pokeball&page=1&position=40&origin=tag&related_id=13929018 - ICON
+4. 
+
+## Steps to set up and run the application.
+1. Open the zip file
+2. Navigate to tly
+3. Open index.html and run without debugging
+4. Test it
+
+## List of features implemented.
+1. Pokemon Search
+2. Filtering
+3. Details - Basic Stats, Moves Lists, Evolution, Favorite Pokemon.
+4. Local Storage, keep the favorite pokemons after refreshing
+
+## APIs used and their URLs.
+1. `https://pokeapi.co/api/v2/pokemon?limit=100`
+2. `https://pokeapi.co/api/v2/pokemon/{pokemon-name}`
+3. `https://pokeapi.co/api/v2/pokemon-species/{pokemon-name}`
+4. `https://pokeapi.co/api/v2/evolution-chain/{chain-id}`
+
+## Any additional notes or considerations.
+N/A

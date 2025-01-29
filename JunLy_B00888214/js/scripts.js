@@ -348,7 +348,6 @@ document.addEventListener('click', function (event) {
       const modalTitle = document.querySelector('.portfolio-modal-title');
       const modalPokemonImage = document.querySelector('.modal-pokemon-image');
       const pokemonDetailsContainer = document.querySelector('.pokemon-details-container');
-      const evolutionChainContainer = document.querySelector('.evolution-chain-container');
 
       modalTitle.textContent = pokemonName;
       modalPokemonImage.src = pokemonDetails.sprites.front_default;
@@ -499,14 +498,6 @@ function displayEvolutionChain(chain, container) {
   }).join('');
 
   container.innerHTML = `
-    <style>
-      .pokemon-link {
-        transition: transform 0.2s;
-      }
-      .pokemon-link:hover {
-        transform: scale(1.1);
-      }
-    </style>
     <div class="evolution-chain-display">
       ${html}
     </div>

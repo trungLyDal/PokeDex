@@ -11329,3 +11329,10 @@ details.mobile-only {
 .modal .favorite-btn.active {
   color: #ff0000;
 }
+
+.pokemon-link {
+  transition: transform 0.2s;
+}
+.pokemon-link:hover {
+  transform: scale(1.1);
+}
