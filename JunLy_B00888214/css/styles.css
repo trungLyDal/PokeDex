@@ -11240,3 +11240,31 @@ details.mobile-only {
   }
 }
 
+.evolution-chain {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.evolution-chain button {
+  background: linear-gradient(135deg, #ffcc33, #ff5733);
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.evolution-chain button:hover {
+  background: linear-gradient(135deg, #ff5733, #ffcc33);
+  transform: scale(1.05);
+}
+
+.evolution-chain button:active {
+  transform: scale(0.95);
+}
