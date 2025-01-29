@@ -45,30 +45,32 @@ window.addEventListener('DOMContentLoaded', event => {
 });
 // Global variables
 const url = `https://pokeapi.co/api/v2/pokemon?limit=150`;
-let pokemonList = []; // Stores the list of Pokémon
-let pokemonDetailsCache = {}; // Caches Pokémon details for quick access
-let isDataLoaded = false; // Tracks if data has been loaded
+let pokemonList = []; 
+let pokemonDetailsCache = {}; 
+let isDataLoaded = false; 
 
 // Fetch Pokémon data
 fetch(url)
   .then(response => response.json())
   .then(data => {
-    pokemonList = data.results; // Assign fetched data to pokemonList
+    pokemonList = data.results; 
 
     // Fetch details for each Pokémon
     const fetchDetails = pokemonList.map(pokemon =>
       fetch(pokemon.url)
         .then(response => response.json())
         .then(pokemonDetails => {
-          pokemonDetailsCache[pokemon.name] = pokemonDetails; // Cache details
+          pokemonDetailsCache[pokemon.name] = pokemonDetails; 
         })
     );
 
     // Wait for all details to be fetched
     Promise.all(fetchDetails)
       .then(() => {
-        isDataLoaded = true; // Mark data as loaded
+        isDataLoaded = true; 
         console.log('Pokémon data loaded successfully.');
+
+        displayPokemon(pokemonList);
 
         // Add event listener for search button
         const searchButton = document.querySelector('.custom-search-btn');
