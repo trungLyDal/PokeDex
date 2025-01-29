@@ -11268,3 +11268,64 @@ details.mobile-only {
 .evolution-chain button:active {
   transform: scale(0.95);
 }
+
+.favorite-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.favorite-btn:hover {
+  color: #ff0000;
+  transform: scale(1.1);
+}
+
+.favorite-btn.active {
+  color: #ff0000;
+}
+
+.portfolio-item-caption {
+  z-index: 100;
+}
+
+/* Add this for smooth removal animation */
+.favorite-card-removal {
+  animation: fadeOut 0.3s ease forwards;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+.modal .favorite-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.3s ease;
+}
+
+.modal .favorite-btn:hover {
+  color: #ff0000;
+}
+
+.modal .favorite-btn.active {
+  color: #ff0000;
+}

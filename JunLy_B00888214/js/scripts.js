@@ -43,6 +43,69 @@ window.addEventListener('DOMContentLoaded', event => {
     });
 
 });
+
+let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+function toggleFavorite(pokemonName) {
+    const index = favorites.indexOf(pokemonName);
+    if (index === -1) {
+        favorites.push(pokemonName);
+    } else {
+        favorites.splice(index, 1);
+    }
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+    updateFavoriteBadges();
+    displayFavorites();
+}
+
+function isFavorite(pokemonName) {
+    return favorites.includes(pokemonName);
+}
+
+function updateFavoriteBadges() {
+    document.querySelectorAll('.favorite-btn').forEach(btn => {
+        const pokemonName = btn.dataset.pokemon;
+        btn.classList.toggle('active', isFavorite(pokemonName));
+    });
+}
+
+function displayFavorites() {
+    const favoritesGrid = document.getElementById('favorites-grid');
+    favoritesGrid.innerHTML = '';
+
+    favorites.forEach(pokemonName => {
+        const pokemon = pokemonList.find(p => p.name === pokemonName);
+        const pokemonDetails = pokemonDetailsCache[pokemonName];
+        
+        if (pokemonDetails) {
+            const favoriteCard = document.createElement('div');
+            favoriteCard.className = 'col-md-4 col-lg-3 mb-4';
+            favoriteCard.innerHTML = `
+                <div class="portfolio-item mx-auto" style="width: 18rem;">
+    <div class="position-relative shadow-lg rounded-3 p-3 bg-white">
+        <button class="favorite-btn active" data-pokemon="${pokemonName}">
+            <i class="fas fa-heart"></i>
+        </button>
+        <img class="img-fluid rounded-3" src="${pokemonDetails.sprites.front_default}" 
+             alt="${pokemonName}" style="min-height: 200px; object-fit: contain;">
+        <div class="text-center mt-3">
+            <h4 class="text-dark mb-3">${pokemonName.toUpperCase()}</h4>
+            <div class="d-flex justify-content-center">
+                <button class="btn btn-danger remove-favorite px-4 py-2" 
+                        data-pokemon="${pokemonName}"
+                        style="font-size: 1.1rem;">
+                    Remove
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+            `;
+            favoritesGrid.appendChild(favoriteCard);
+        }
+    });
+}
+
 const url = `https://pokeapi.co/api/v2/pokemon?limit=100`;
 let pokemonList = []; 
 let pokemonDetailsCache = {}; 
@@ -65,6 +128,7 @@ fetch(url)
     Promise.all(fetchDetails)
       .then(() => {
         isDataLoaded = true; 
+        displayFavorites();
         console.log('Pokémon data loaded successfully.');
 
         displayPokemon(pokemonList);
@@ -249,23 +313,31 @@ function displayPokemon(pokemonList) {
   pokemonGrid.innerHTML = '';
 
   pokemonList.forEach(pokemon => {
-    const pokemonDetails = pokemonDetailsCache[pokemon.name];
-    if (pokemonDetails) {
-      const pokemonCard = document.createElement('div');
-      pokemonCard.className = 'col-md-6 col-lg-4 mb-5';
-      pokemonCard.innerHTML = `
-        <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal1">
-          <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-            <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
-          </div>
-          <img class="img-fluid pokemon-image" src="${pokemonDetails.sprites.front_default}" alt="${pokemon.name}" />
-        </div>
-      `;
-      pokemonGrid.appendChild(pokemonCard);
-    }
+      const pokemonDetails = pokemonDetailsCache[pokemon.name];
+      if (pokemonDetails) {
+          const pokemonCard = document.createElement('div');
+          pokemonCard.className = 'col-md-6 col-lg-4 mb-5';
+          pokemonCard.innerHTML = `
+              <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal1">
+                  <div class="position-relative">
+                      <button class="favorite-btn" data-pokemon="${pokemon.name}">
+                          <i class="${isFavorite(pokemon.name) ? 'fas' : 'far'} fa-heart"></i>
+                      </button>
+                      <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
+                          <div class="portfolio-item-caption-content text-center text-white">
+                              <i class="fas fa-plus fa-3x"></i>
+                          </div>
+                      </div>
+                      <img class="img-fluid pokemon-image" src="${pokemonDetails.sprites.front_default}" alt="${pokemon.name}" />
+                  </div>
+              </div>
+          `;
+          pokemonGrid.appendChild(pokemonCard);
+      }
   });
+  
+  updateFavoriteBadges();
 }
-
 document.addEventListener('click', function (event) {
   if (event.target.closest('.portfolio-item')) {
     const pokemonImage = event.target.closest('.portfolio-item').querySelector('.pokemon-image');
@@ -528,3 +600,25 @@ function displayEvolutionChain(chain, container) {
     });
   });
 }
+document.addEventListener('click', function(event) {
+  if (event.target.closest('.favorite-btn')) {
+      const button = event.target.closest('.favorite-btn');
+      const pokemonName = button.dataset.pokemon;
+      toggleFavorite(pokemonName);
+      button.querySelector('i').classList.toggle('far');
+      button.querySelector('i').classList.toggle('fas');
+      event.stopPropagation();
+      
+      const modal = bootstrap.Modal.getInstance(document.getElementById('portfolioModal1'));
+      if (modal) {
+          modal.hide();
+      }
+  }
+
+  if (event.target.closest('.remove-favorite')) {
+      const button = event.target.closest('.remove-favorite');
+      const pokemonName = button.dataset.pokemon;
+      toggleFavorite(pokemonName);
+      displayFavorites();
+  }
+});
